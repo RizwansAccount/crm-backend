@@ -15,4 +15,6 @@ router.patch('/:id', validate(UserValidation.update.bodySchema), UserController.
 
 router.delete('/:id', UserController.delete)
 
+router.post('/login', validate(UserValidation.login.bodySchema), UserController.login);
+
 export default router;
