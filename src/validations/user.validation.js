@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { ROLE } from "../config/roles.js";
 
 export const UserValidation = {
 
@@ -26,7 +27,7 @@ export const UserValidation = {
             name : Joi.string().required(),
             email : Joi.string().required().email(),
             password : Joi.string().required(),
-            role: Joi.string().valid('admin', 'manager', 'sale-representative').required()
+            role: Joi.string().valid(ROLE.admin, ROLE.manager, ROLE.representative).required()
         })
     },
 
@@ -35,7 +36,7 @@ export const UserValidation = {
             name : Joi.string(),
             email : Joi.string().email(),
             password : Joi.string(),
-            role: Joi.string().valid('admin', 'manager', 'sale-representative')
+            role: Joi.string().valid(ROLE.admin, ROLE.manager, ROLE.representative)
         })
     },
 

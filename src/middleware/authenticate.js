@@ -14,7 +14,8 @@ export const authenticate = (req, res, next) => {
 	const bearerToken = token.split(" ")[1];
 
 	try {
-		req.user = jwt.verify(bearerToken, config.env.jwtSecret);
+		const payload = jwt.verify(bearerToken, config.env.jwtSecret);
+		req.user = payload;
 		next();
 	} catch (error) {
 		httpResponse.UNAUTHORIZED(res, "Token is not valid", "Invalid token.");

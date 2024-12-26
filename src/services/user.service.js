@@ -33,9 +33,11 @@ export const UserService = {
 
         if (!isPasswordValid) { throw new Error('invalid password!'); }
 
-        const token = jwt.sign({ email: user?.email }, config.env.jwtSecret);
+        const userDetails = { email: user.email, role: user.role, _id: user._id };
 
-        return { token, user_id: user?._id, email: user?.email };
+        const token = jwt.sign(userDetails, config.env.jwtSecret);
+
+        return { token, user_id: user?._id, email: user?.email, role: user?.role };
     },
 
     update: async (id, body) => {
