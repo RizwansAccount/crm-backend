@@ -8,15 +8,15 @@ import { PERMISSION } from '../config/roles.js';
 
 const router = epxress.Router();
 
-router.get('/', authenticate, authorize(PERMISSION.view_record), UserController.getAll);
+router.get('/', authenticate, authorize(PERMISSION.view_all_user), UserController.getAll);
 
-router.get('/:id', UserController.getById);
+router.get('/:id', authenticate, UserController.getById);
 
-router.post('/', validate(UserValidation.create.bodySchema), UserController.create);
+router.post('/', validate(UserValidation.create.bodySchema), authorize(PERMISSION.create_user), UserController.create);
 
-router.patch('/:id', validate(UserValidation.update.bodySchema), UserController.update);
+router.patch('/:id', authenticate, authorize(PERMISSION.update_user), validate(UserValidation.update.bodySchema), UserController.update);
 
-router.delete('/:id', UserController.delete)
+router.delete('/:id', authenticate, authorize(PERMISSION.delete_user), UserController.delete)
 
 router.post('/login', validate(UserValidation.login.bodySchema), UserController.login);
 

@@ -1,8 +1,9 @@
 export const PERMISSION = {
-    create_record: 'create_record',
-    delete_record: 'delete_record',
-    view_record: 'view_record',
-    update_record: 'update_record'
+    create_user: 'create_user',
+    delete_user: 'delete_user',
+    view_user: 'view_user',
+    view_all_user : 'view_all_user',
+    update_user: 'update_user'
 };
 
 export const ROLE = {
@@ -12,7 +13,7 @@ export const ROLE = {
 };
 
 export const roles = {
-    admin: ['create_record', 'delete_record', 'view_record', 'update_record'],
-    representative: ['create_record', 'view_record', 'update_record'],
-    manager: ['view_record'],
+    admin: ['create_user', 'delete_user', 'view_user', 'update_user', 'view_all_user'],
+    representative: ['view_user'],
+    manager: ['view_user'],
 };
