@@ -7,7 +7,6 @@ export const authorize = (requiredPermission) => {
     const permissions = roles[userRole];
 
     if (!permissions || !permissions?.includes(requiredPermission)) {
-      // return res.status(403).json({ error: 'Access denied' });
       return httpResponse.UNAUTHORIZED(res, {}, 'Acess denied');
     }
 
