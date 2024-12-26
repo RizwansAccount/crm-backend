@@ -9,12 +9,6 @@ export const UserValidation = {
         }),
     },
 
-    email : {
-        bodySchema : Joi.object().keys({
-            email : Joi.string().required(),
-        }),
-    },
-
     login : {
         bodySchema : Joi.object().keys({
             email : Joi.string().required(),
@@ -37,35 +31,6 @@ export const UserValidation = {
             email : Joi.string().email(),
             password : Joi.string(),
             role: Joi.string().valid(ROLE.admin, ROLE.manager, ROLE.representative)
-        })
-    },
-
-    verifyCode : {
-        bodySchema : Joi.object().keys({
-            email : Joi.string().required(),
-            verification_code : Joi.string().required(),
-        })
-    },
-
-    changePassword : {
-        bodySchema : Joi.object().keys({
-            email : Joi.string().required(),
-            password : Joi.string().required(),
-            new_password : Joi.string().required()
-        })
-    },
-
-    verifyCode : {
-        bodySchema : Joi.object().keys({
-            email : Joi.string().required(),
-            verification_code : Joi.string().required()
-        })
-    },
-
-    newPassword : {
-        bodySchema : Joi.object().keys({
-            email : Joi.string().required(),
-            password : Joi.string().required()
         })
     },
 
