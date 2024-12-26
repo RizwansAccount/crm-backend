@@ -15,9 +15,9 @@ export const UserService = {
     create: async (body) => {
         let { email, password } = body;
 
-        const isUserExist = await UserModel.findOne({email});
+        const isUserExist = await UserModel.findOne({ email });
 
-        if(isUserExist) { throw new Error('user already exists!') };
+        if (isUserExist) { throw new Error('user already exists!') };
 
         password = passwordHash?.generate(password);
         return await UserModel.create({ ...body, password });
@@ -39,6 +39,11 @@ export const UserService = {
     },
 
     update: async (id, body) => {
+        let { password } = body;
+        if (password) {
+            password = passwordHash?.generate(password);
+            body = { ...body, password };
+        };
         return await UserModel.findByIdAndUpdate(id, body);
     },
 
