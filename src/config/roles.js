@@ -8,8 +8,8 @@ export const PERMISSION = {
 
 export const ROLE = {
     admin: 'admin',
-    manager: 'manager',
-    representative: 'representative'
+    representative: 'representative',
+    manager: 'manager'
 };
 
 export const roles = {
