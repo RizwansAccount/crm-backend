@@ -28,15 +28,6 @@ export const ContactController = {
             return httpResponse.INTERNAL_SERVER_ERROR(res, error);
         }
     },
-    login: async (req, res) => {
-        try {
-            const body = req.body;
-            const data = await ContactService.login(body);
-            return httpResponse.SUCCESS(res, data, 'logged in successfully!');
-        } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
-        }
-    },
     update: async (req, res) => {
         try {
             const id = req.params.id;
