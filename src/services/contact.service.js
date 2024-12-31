@@ -1,5 +1,4 @@
-import { ROLE } from "../config/roles.js";
-import { ContactModel, UserModel } from "../models/index.js";
+import { ContactModel } from "../models/index.js";
 import { createQueryByRole, deleteQueryByRole, getAllQueryByRole, getByIdQueryByRole, updateQueryByRole } from "../utils/queriesByRole.js";
 
 export const ContactService = {
