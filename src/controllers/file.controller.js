@@ -5,7 +5,7 @@ import { isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote } from "../uti
 export const FileController = {
     getAll: async (req, res) => {
         try {
-            const data = await FileService.getAll();
+            const data = await FileService.getAll(req);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));

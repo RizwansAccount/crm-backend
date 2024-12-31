@@ -6,7 +6,7 @@ import { isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote } from "../uti
 export const NoteController = {
     getAll: async (req, res) => {
         try {
-            const data = await NoteService.getAll();
+            const data = await NoteService.getAll(req);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
