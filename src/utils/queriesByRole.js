@@ -4,34 +4,23 @@ import { ContactModel, FileModel, NoteModel, UserModel } from "../models/index.j
 const getAllQueryByRole = async (req, Model) => {
     const user_id = req.user.user_id;
     const user_role = req.user.role;
-    if (user_role === ROLE.representative) {
-        return await Model.find({ $or: [{ created_by: user_id }, { assigned_to: user_id }] })
-            .populate('created_by', '_id name email role')
-            .populate('assigned_to', '_id name email role')
-            .populate('last_updated_by', '_id name email role');
-    } else {
-        return await Model.find()
-            .populate('created_by', '_id name email role')
-            .populate('assigned_to', '_id name email role')
-            .populate('last_updated_by', '_id name email role');
-    }
+    const query = user_role === ROLE.representative ? { $or: [{ created_by: user_id }, { assigned_to: user_id }] } : {};
+
+    return await Model.find(query)
+        .populate('created_by', '_id name email role')
+        .populate('assigned_to', '_id name email role')
+        .populate('last_updated_by', '_id name email role');
 };
 
 const getByIdQueryByRole = async (id, req, Model) => {
     const user_role = req.user.role;
     const user_id = req.user.user_id;
+    const query = user_role === ROLE.representative ? { _id: id, $or: [{ assigned_to: user_id }, { created_by: user_id }] } : { _id: id };
 
-    if (user_role === ROLE.representative) {
-        return await Model.findOne({ _id: id, $or: [{ assigned_to: user_id }, { created_by: user_id }] })
-            .populate('created_by', '_id name email role')
-            .populate('assigned_to', '_id name email role')
-            .populate('last_updated_by', '_id name email role');
-    } else {
-        return await Model.findOne({ _id: id })
-            .populate('created_by', '_id name email role')
-            .populate('assigned_to', '_id name email role')
-            .populate('last_updated_by', '_id name email role');
-    }
+    return await Model.findOne(query)
+        .populate('created_by', '_id name email role')
+        .populate('assigned_to', '_id name email role')
+        .populate('last_updated_by', '_id name email role');
 };
 
 const createQueryByRole = async (req, body, Model) => {
@@ -49,7 +38,11 @@ const updateQueryByRole = async (id, req, Model) => {
     const user_id = req.user.user_id;
     if (user_role === ROLE.representative) {
         const { created_by, assigned_to, ...allowedUpdates } = req.body;
-        return await Model.findOneAndUpdate({ _id: id, $or: [{ created_by: user_id }, { assigned_to: user_id }] }, { ...allowedUpdates, last_updated_by: user_id });
+        const query = await Model.findOneAndUpdate({ _id: id, $or: [{ created_by: user_id }, { assigned_to: user_id }] }, { ...allowedUpdates, last_updated_by: user_id });
+        if (!query) {
+            throw new Error("you don't have permission to do this action!")
+        };
+        return query;
     } else {
         return await Model.findByIdAndUpdate(id, { ...req.body, last_updated_by: user_id });
     }
@@ -59,11 +52,11 @@ const deleteQueryByRole = async (id, req, Model) => {
     const user_role = req.user.role;
     const user_id = req.user.user_id;
     if (user_role === ROLE.representative) {
-        const record = await Model.findOneAndDelete({ _id: id, created_by: user_id });
-        if (!record) {
+        const query = await Model.findOneAndDelete({ _id: id, created_by: user_id });
+        if (!query) {
             throw new Error("you don't have permission to perform this action!")
         };
-        return record;
+        return query;
     } else {
         return await Model.findByIdAndDelete(id);
     }
@@ -76,32 +69,12 @@ const isAllowedToAttachFileOrNote = async (req) => {
     const { source_id, source } = body;
     if (user_role === ROLE.representative) {
         if (source === SOURCE.contact) {
-            const isCreatedOrAssignedContact = await ContactModel.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
-            if (isCreatedOrAssignedContact) {
-                return true;
-            }
-            else {
+            const query = await ContactModel.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
+            if (!query) {
                 throw new Error("you don't have permission to perform this action");
             }
+            return true;
         }
-        // if (source === SOURCE.lead) {
-        //     const isCreatedOrAssignedLead = await LeadModel.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
-        //     if (isCreatedOrAssignedLead) {
-        //         return true;
-        //     }
-        //     else {
-        //         throw new Error("you don't have permission to perform this action");
-        //     }
-        // }
-        // if (source === SOURCE.activity) {
-        //     const isCreatedOrAssignedAcitivity = await ActivityModel.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
-        //     if (isCreatedOrAssignedAcitivity) {
-        //         return true;
-        //     }
-        //     else {
-        //         throw new Error("you don't have permission to perform this action");
-        //     }
-        // }
     } else {
         return true;
     }
@@ -110,20 +83,19 @@ const isAllowedToAttachFileOrNote = async (req) => {
 const isAllowedToDeleteFileOrNote = async (req, module) => {
     const user_id = req.user.user_id;
     const user_role = req.user.role;
-    if (user_role === ROLE.representative) {
-        if (module === 'note') {
-            const isCreatedByUser = await NoteModel.findOne({ _id: req.params.id, create_by: user_id });
-            if (isCreatedByUser) { return true; }
-            else { throw new Error("you don't have permission to perform this action"); }
-        }
-        if (module === 'file') {
-            const isUploadByUser = await FileModel.findOne({ _id: req.params.id, create_by: user_id });
-            if (isUploadByUser) { return true; }
-            else { throw new Error("you don't have permission to perform this action"); }
-        }
-    } else {
-        return true;
+
+    if (user_role !== ROLE.representative) { return true; };
+    const models = { note: NoteModel, file: FileModel };
+
+    const Model = models[module];
+    const query = await Model.findOne({ _id: req.params.id, create_by: user_id });
+
+    if (!query) {
+        throw new Error("You don't have permission to perform this action");
     }
+
+    return true;
+
 };
 
 export {

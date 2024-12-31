@@ -2,7 +2,7 @@ import { NoteModel } from "../models/index.js";
 
 export const NoteService = {
     getAll: async (req) => {
-        const source = req.query.source;
+        const source = req?.query?.source;
         if (source) {
             return await NoteModel.find({ source })
                 .populate('create_by', '_id name email role')
