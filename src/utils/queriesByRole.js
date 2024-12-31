@@ -1,5 +1,5 @@
 import { ROLE, SOURCE } from "../config/roles.js";
-import { ContactModel, NoteModel, UserModel } from "../models/index.js";
+import { ContactModel, FileModel, NoteModel, UserModel } from "../models/index.js";
 
 const getAllQueryByRole = async (req, Model) => {
     const user_id = req.user.user_id;
@@ -91,8 +91,13 @@ const isAllowedToDeleteFileOrNote = async (req, module) => {
     const user_role = req.user.role;
     if (user_role === ROLE.representative) {
         if (module === 'note') {
-            const isCreatedByUser = await NoteModel.findOne({ _id : req.params.id, create_by: user_id });
+            const isCreatedByUser = await NoteModel.findOne({ _id: req.params.id, create_by: user_id });
             if (isCreatedByUser) { return true; }
+            else { throw new Error("you don't have permission to perform this action"); }
+        }
+        if (module === 'file') {
+            const isUploadByUser = await FileModel.findOne({ _id: req.params.id, create_by : user_id });
+            if (isUploadByUser) { return true; }
             else { throw new Error("you don't have permission to perform this action"); }
         }
     } else {

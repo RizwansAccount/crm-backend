@@ -1,6 +1,6 @@
 import { FileService } from "../services/index.js";
 import { httpResponse } from "../utils/index.js";
-import { isAllowedToAttachFileOrNote } from "../utils/queriesByRole.js";
+import { isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote } from "../utils/queriesByRole.js";
 
 export const FileController = {
     getAll: async (req, res) => {
@@ -34,7 +34,8 @@ export const FileController = {
                     type: file?.mimetype,
                     path: file?.path,
                     size: file?.size,
-                    upload_by: req.user.user_id,
+                    create_by: req.user.user_id,
+                    last_update_by: req.user.user_id,
                     ...req.body
                 }));
 
@@ -62,7 +63,7 @@ export const FileController = {
                     type: file?.mimetype,
                     path: file?.path,
                     size: file?.size,
-                    upload_by: req.user.user_id,
+                    last_update_by: req.user.user_id,
                     ...req.body
                 };
 
@@ -76,8 +77,11 @@ export const FileController = {
     delete: async (req, res) => {
         try {
             const id = req.params.id;
-            const data = await FileService.delete(id);
-            return httpResponse.SUCCESS(res, data);
+            const isAllowed = await isAllowedToDeleteFileOrNote(req, 'file');
+            if (isAllowed) {
+                const data = await FileService.delete(id);
+                return httpResponse.SUCCESS(res, data);
+            }
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
