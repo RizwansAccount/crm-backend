@@ -22,7 +22,8 @@ export const NoteController = {
     create: async (req, res) => {
         try {
             const body = req.body;
-            const data = await NoteService.create(body);
+            const user_id = req.user.user_id;
+            const data = await NoteService.create({ ...body, create_by: user_id, last_update_by: user_id });
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
@@ -32,7 +33,7 @@ export const NoteController = {
         try {
             const id = req.params.id;
             const body = req.body;
-            const data = await NoteService.update(id, body);
+            const data = await NoteService.update(id, { ...body, last_update_by: req.user.user_id });
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));

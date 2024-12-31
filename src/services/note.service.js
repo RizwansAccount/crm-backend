@@ -2,11 +2,15 @@ import { NoteModel } from "../models/index.js";
 
 export const NoteService = {
     getAll: async () => {
-        return await NoteModel.find();
+        return await NoteModel.find()
+        .populate('create_by', '_id name email role')
+        .populate('last_update_by', '_id name email role');
     },
 
     getById: async (id) => {
-        return await NoteModel.findOne({ _id: id });
+        return await NoteModel.findOne({ _id: id })
+        .populate('create_by', '_id name email role')
+        .populate('last_update_by', '_id name email role');
     },
 
     create: async (body) => {
