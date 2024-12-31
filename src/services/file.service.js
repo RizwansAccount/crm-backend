@@ -15,7 +15,9 @@ export const FileService = {
     },
 
     getById: async (id) => {
-        return await FileModel.findOne({ _id: id }).populate('create_by', '_id name email role').populate('last_update_by', '_id name email role');
+        return await FileModel.findOne({ _id: id })
+            .populate('create_by', '_id name email role')
+            .populate('last_update_by', '_id name email role');
     },
 
     createMany: async (body) => {
