@@ -2,7 +2,7 @@ import { FileModel } from "../models/index.js";
 
 export const FileService = {
     getAll: async () => {
-        return await FileModel.find().populate('upload_by', '_id name email role');;
+        return await FileModel.find().populate('upload_by', '_id name email role');
     },
 
     getById: async (id) => {

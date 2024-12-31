@@ -25,6 +25,12 @@ export const ROLE = {
     representative: 'representative'
 };
 
+export const SOURCE = {
+    contact: 'contact',
+    lead: 'lead',
+    activity: 'activity'
+};
+
 export const roles = {
     [ROLE.admin]: [
         PERMISSION.create_user, PERMISSION.view_all_user, PERMISSION.view_user, PERMISSION.update_user, PERMISSION.delete_user,

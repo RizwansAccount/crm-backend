@@ -1,5 +1,7 @@
+
 import { NoteService } from "../services/index.js";
 import { httpResponse } from "../utils/index.js";
+import { isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote } from "../utils/queriesByRole.js";
 
 export const NoteController = {
     getAll: async (req, res) => {
@@ -23,8 +25,11 @@ export const NoteController = {
         try {
             const body = req.body;
             const user_id = req.user.user_id;
-            const data = await NoteService.create({ ...body, create_by: user_id, last_update_by: user_id });
-            return httpResponse.SUCCESS(res, data);
+            const isAllowed = await isAllowedToAttachFileOrNote(req);
+            if (isAllowed) {
+                const data = await NoteService.create({ ...body, create_by: user_id, last_update_by: user_id });
+                return httpResponse.SUCCESS(res, data);
+            }
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
@@ -33,8 +38,11 @@ export const NoteController = {
         try {
             const id = req.params.id;
             const body = req.body;
-            const data = await NoteService.update(id, { ...body, last_update_by: req.user.user_id });
-            return httpResponse.SUCCESS(res, data);
+            const isAllowed = await isAllowedToAttachFileOrNote(req);
+            if (isAllowed) {
+                const data = await NoteService.update(id, { ...body, last_update_by: req.user.user_id });
+                return httpResponse.SUCCESS(res, data);
+            }
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
@@ -42,8 +50,11 @@ export const NoteController = {
     delete: async (req, res) => {
         try {
             const id = req.params.id;
-            const data = await NoteService.delete(id);
-            return httpResponse.SUCCESS(res, data);
+            const isAllowed = await isAllowedToDeleteFileOrNote(req, 'note');
+            if (isAllowed) {
+                const data = await NoteService.delete(id);
+                return httpResponse.SUCCESS(res, data);
+            }
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }

@@ -6,7 +6,7 @@ export const validate = (schema, source = 'body') => {
         
         if (error) {
             const errorMessage = error.details?.map((detail) => detail.message.replace(/\"/g, ""))?.join(", ");
-            return httpResponse.BAD_REQUEST(res, errorMessage);
+            return httpResponse.BAD_REQUEST(res, {}, errorMessage);
         }
         
         next();
