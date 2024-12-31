@@ -31,6 +31,7 @@ export const FileController = {
                 type: file?.mimetype,
                 path: file?.path,
                 size: file?.size,
+                upload_by : req.user.user_id,
                 ...req.body
             }));
 
@@ -54,6 +55,7 @@ export const FileController = {
                 type: file?.mimetype,
                 path: file?.path,
                 size: file?.size,
+                upload_by : req.user.user_id,
                 ...req.body
             };
 

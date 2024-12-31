@@ -13,7 +13,7 @@ export default {
                     size: Joi.number().required(),
                 })
             ),
-            upload_by: Joi.string().required(),
+            upload_by: Joi.string(),
             source: Joi.string().required(),
             source_id: Joi.string().required(),
         })
@@ -28,7 +28,7 @@ export default {
                 path: Joi.string().required(),
                 size: Joi.string().required(),
             }),
-            upload_by: Joi.string().required(),
+            upload_by: Joi.string(),
             source: Joi.string().required(),
             source_id: Joi.string().required()
         })

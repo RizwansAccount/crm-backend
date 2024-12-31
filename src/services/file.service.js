@@ -2,11 +2,11 @@ import { FileModel } from "../models/index.js";
 
 export const FileService = {
     getAll: async () => {
-        return await FileModel.find();
+        return await FileModel.find().populate('upload_by', '_id name email role');;
     },
 
     getById: async (id) => {
-        return await FileModel.findOne({ _id: id });
+        return await FileModel.findOne({ _id: id }).populate('upload_by', '_id name email role');
     },
 
     createMany: async (body) => {
