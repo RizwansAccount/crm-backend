@@ -59,11 +59,14 @@ const deleteQueryByRole = async (id, req, Model) => {
     const user_role = req.user.role;
     const user_id = req.user.user_id;
     if (user_role === ROLE.representative) {
-        return await Model.findOneAndDelete({ _id: id, created_by: user_id });
+        const record = await Model.findOneAndDelete({ _id: id, created_by: user_id });
+        if (!record) {
+            throw new Error("you don't have permission to perform this action!")
+        };
+        return record;
     } else {
         return await Model.findByIdAndDelete(id);
     }
-
 };
 
 const isAllowedToAttachFileOrNote = async (req) => {
@@ -81,6 +84,24 @@ const isAllowedToAttachFileOrNote = async (req) => {
                 throw new Error("you don't have permission to perform this action");
             }
         }
+        // if (source === SOURCE.lead) {
+        //     const isCreatedOrAssignedLead = await LeadModel.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
+        //     if (isCreatedOrAssignedLead) {
+        //         return true;
+        //     }
+        //     else {
+        //         throw new Error("you don't have permission to perform this action");
+        //     }
+        // }
+        // if (source === SOURCE.activity) {
+        //     const isCreatedOrAssignedAcitivity = await ActivityModel.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
+        //     if (isCreatedOrAssignedAcitivity) {
+        //         return true;
+        //     }
+        //     else {
+        //         throw new Error("you don't have permission to perform this action");
+        //     }
+        // }
     } else {
         return true;
     }
@@ -96,7 +117,7 @@ const isAllowedToDeleteFileOrNote = async (req, module) => {
             else { throw new Error("you don't have permission to perform this action"); }
         }
         if (module === 'file') {
-            const isUploadByUser = await FileModel.findOne({ _id: req.params.id, create_by : user_id });
+            const isUploadByUser = await FileModel.findOne({ _id: req.params.id, create_by: user_id });
             if (isUploadByUser) { return true; }
             else { throw new Error("you don't have permission to perform this action"); }
         }
