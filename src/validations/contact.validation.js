@@ -2,12 +2,6 @@ import Joi from "joi";
 
 export const ContactValidation = {
 
-    id: {
-        paramsSchema: Joi.object().keys({
-            id: Joi.string().required(),
-        }),
-    },
-
     create: {
         bodySchema: Joi.object().keys({
             name: Joi.string().required(),
@@ -15,7 +9,8 @@ export const ContactValidation = {
             phone: Joi.number().required(),
             address: Joi.string().required(),
             company: Joi.string().required(),
-            tags: Joi.array().items(Joi.string().required())
+            tags: Joi.array().items(Joi.string().required()),
+            assigned_to: Joi.string().required(),
         })
     },
 
@@ -26,7 +21,8 @@ export const ContactValidation = {
             phone: Joi.number(),
             address: Joi.string(),
             company: Joi.string(),
-            tags: Joi.array().items(Joi.string().required())
+            tags: Joi.array().items(Joi.string().required()),
+            assigned_to: Joi.string(),
         })
     },
 

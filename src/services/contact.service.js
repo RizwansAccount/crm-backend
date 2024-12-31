@@ -1,23 +1,30 @@
-import { ContactModel } from "../models/index.js";
+import { ROLE } from "../config/roles.js";
+import { ContactModel, UserModel } from "../models/index.js";
+import { createQueryByRole, deleteQueryByRole, getAllQueryByRole, getByIdQueryByRole, updateQueryByRole } from "../utils/queriesByRole.js";
 
 export const ContactService = {
-    getAll: async () => {
-        return await ContactModel.find();
+    getAll: async (req) => {
+        const data = await getAllQueryByRole(req, ContactModel);
+        return data;
     },
 
-    getById: async (id) => {
-        return await ContactModel.findOne({ _id: id });
+    getById: async (id, req) => {
+        const data = await getByIdQueryByRole(id, req, ContactModel);
+        return data;
     },
 
-    create: async (body) => {
-        return await ContactModel.create(body);
+    create: async (req, body) => {
+        const data = await createQueryByRole(req, body, ContactModel);
+        return data;
     },
 
-    update: async (id, body) => {
-        return await ContactModel.findByIdAndUpdate(id, body);
+    update: async (id, req) => {
+        const data = await updateQueryByRole(id, req, ContactModel);
+        return data;
     },
 
-    delete: async (id) => {
-        return await ContactModel.findByIdAndDelete(id);
+    delete: async (id, req) => {
+        const data = await deleteQueryByRole(id, req, ContactModel);
+        return data;
     },
 };

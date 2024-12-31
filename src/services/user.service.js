@@ -33,7 +33,7 @@ export const UserService = {
 
         if (!isPasswordValid) { throw new Error('invalid password!'); }
 
-        const userDetails = { email: user.email, role: user.role, _id: user._id };
+        const userDetails = { email: user.email, role: user.role, user_id: user._id };
 
         const token = jwt.sign(userDetails, config.env.jwtSecret);
 

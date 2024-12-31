@@ -21,8 +21,8 @@ export const PERMISSION = {
 
 export const ROLE = {
     admin: 'admin',
-    representative: 'representative',
-    manager: 'manager'
+    manager: 'manager',
+    representative: 'representative'
 };
 
 export const roles = {
@@ -32,15 +32,16 @@ export const roles = {
         PERMISSION.create_file, PERMISSION.view_all_file, PERMISSION.view_file, PERMISSION.update_file, PERMISSION.delete_file,
     ],
 
+    [ROLE.manager]: [
+        PERMISSION.create_user, PERMISSION.view_all_user, PERMISSION.view_user, PERMISSION.update_user, PERMISSION.delete_user,
+        PERMISSION.create_contact, PERMISSION.view_all_contact, PERMISSION.view_contact, PERMISSION.update_contact, PERMISSION.delete_contact,
+        PERMISSION.create_file, PERMISSION.view_all_file, PERMISSION.view_file, PERMISSION.update_file, PERMISSION.delete_file,
+    ],
+    
     [ROLE.representative]: [
         PERMISSION.view_user,
-        PERMISSION.create_contact, PERMISSION.view_all_contact, PERMISSION.view_contact, PERMISSION.update_contact,
-        PERMISSION.create_file, PERMISSION.view_all_file, PERMISSION.view_file, PERMISSION.update_file,
+        PERMISSION.create_contact, PERMISSION.view_all_contact, PERMISSION.view_contact, PERMISSION.update_contact, PERMISSION.delete_contact,
+        PERMISSION.create_file, PERMISSION.view_all_file, PERMISSION.view_file, PERMISSION.update_file, PERMISSION.delete_file,
     ],
 
-    [ROLE.manager]: [
-        PERMISSION.view_user,
-        PERMISSION.view_all_contact, PERMISSION.view_contact,
-        PERMISSION.view_all_file, PERMISSION.view_file,
-    ],
 };

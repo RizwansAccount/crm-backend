@@ -7,7 +7,7 @@ export const UserController = {
             const data = await UserService.getAll();
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, error);
+            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
     },
     getById: async (req, res) => {
@@ -16,7 +16,7 @@ export const UserController = {
             const data = await UserService.getById(id);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, error);
+            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
     },
     create: async (req, res) => {
@@ -25,7 +25,7 @@ export const UserController = {
             const data = await UserService.create(body);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, error);
+            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
     },
     login: async (req, res) => {
@@ -44,7 +44,7 @@ export const UserController = {
             const data = await UserService.update(id, body);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, error);
+            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
     },
     delete: async (req, res) => {
@@ -53,7 +53,7 @@ export const UserController = {
             const data = await UserService.delete(id);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, error);
+            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
     },
 
