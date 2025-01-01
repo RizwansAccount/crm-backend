@@ -1,7 +1,7 @@
 import express from "express";
 import { ContactController } from "../controllers/index.js";
 import { validate } from "../middleware/validate.js";
-import { ContactValidation } from "../validations/contact.validation.js";
+import { ContactValidation } from "../validations/index.js";
 import { authorize } from "../middleware/authorize.js";
 import { PERMISSION } from "../config/roles.js";
 

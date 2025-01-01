@@ -37,6 +37,13 @@ export const SOURCE = {
     activity: 'activity'
 };
 
+export const LEAD_STATUS = {
+    new: 'new',
+    contacted: 'contacted',
+    qualified: 'qualified',
+    lost: 'lost'
+};
+
 export const roles = {
     [ROLE.admin]: [
         PERMISSION.create_user, PERMISSION.view_all_user, PERMISSION.view_user, PERMISSION.update_user, PERMISSION.delete_user,
@@ -51,7 +58,7 @@ export const roles = {
         PERMISSION.create_lead, PERMISSION.view_all_lead, PERMISSION.view_lead, PERMISSION.update_lead, PERMISSION.delete_lead,
         PERMISSION.create_file, PERMISSION.view_all_file, PERMISSION.view_file, PERMISSION.update_file, PERMISSION.delete_file,
     ],
-    
+
     [ROLE.representative]: [
         PERMISSION.view_user,
         PERMISSION.create_contact, PERMISSION.view_all_contact, PERMISSION.view_contact, PERMISSION.update_contact, PERMISSION.delete_contact,
