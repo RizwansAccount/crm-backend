@@ -4,15 +4,11 @@ import { isAllowedToDeleteFileOrNote } from "../utils/queriesByRole.js";
 export const NoteService = {
     getAll: async (req) => {
         const source = req?.query?.source;
-        if (source) {
-            return await NoteModel.find({ source })
-                .populate('create_by', '_id name email role')
-                .populate('last_update_by', '_id name email role');
-        } else {
-            return await NoteModel.find()
-                .populate('create_by', '_id name email role')
-                .populate('last_update_by', '_id name email role');
-        }
+        const query = source ? { source } : {};
+
+        return await NoteModel.find(query)
+            .populate('create_by', '_id name email role')
+            .populate('last_update_by', '_id name email role');
     },
 
     getById: async (id) => {
