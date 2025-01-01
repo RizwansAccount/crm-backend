@@ -73,6 +73,12 @@ const isAllowedToAttachFileOrNote = async (req) => {
     const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
     const Model = models[source];
 
+    const isExist = await Model.findById(source_id);
+
+    if (!isExist) {
+        throw new Error("it does not exist!")
+    };
+
     const query = await Model.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
     if (!query) {
         throw new Error("you don't have permission to perform this action");
@@ -86,6 +92,9 @@ const isAllowedToDeleteFileOrNote = async (req, Model) => {
 
     if (user_role !== ROLE.representative) { return true; };
 
+    const isExist = await Model.findById(req.params.id);
+    if (!isExist) { throw new Error("it does not exist!") };
+
     const query = await Model.findOne({ _id: req.params.id, create_by: user_id });
 
     if (!query) {
@@ -93,7 +102,6 @@ const isAllowedToDeleteFileOrNote = async (req, Model) => {
     }
 
     return true;
-
 };
 
 const isAllowedToAccessFilesOrNotes = async (req) => {
@@ -109,6 +117,10 @@ const isAllowedToAccessFilesOrNotes = async (req) => {
     const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
 
     const Model = models[source];
+
+    const isExist = await Model.findById(source_id);
+    if (!isExist) { throw new Error("it does not exist!") };
+
     const query = await Model.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
 
     if (!query) {
@@ -116,7 +128,7 @@ const isAllowedToAccessFilesOrNotes = async (req) => {
     };
 
     return query;
-}
+};
 
 export {
     getAllQueryByRole, getByIdQueryByRole, createQueryByRole, updateQueryByRole, deleteQueryByRole,
