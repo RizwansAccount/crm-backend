@@ -11,7 +11,7 @@ router.get('/:id', NoteController.getById);
 
 router.post('/', validate(NoteValidation.create.bodySchema), NoteController.create);
 
-router.patch('/:id', validate(NoteValidation.update.bodySchema), NoteController.update);
+router.put('/:id', validate(NoteValidation.update.bodySchema), NoteController.update);
 
 router.delete('/:id', NoteController.delete);
 
