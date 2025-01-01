@@ -12,7 +12,7 @@ router.get('/:id', FileController.getById);
 
 router.post('/', uploadFile.array("files", 5), validate(fileValidation.create.bodySchema), FileController.createMany);
 
-router.patch('/:id', uploadFile.single('file'), validate(fileValidation.update.bodySchema), FileController.update);
+router.put('/:id', uploadFile.single('file'), validate(fileValidation.update.bodySchema), FileController.update);
 
 router.delete('/:id', FileController.delete);
 
