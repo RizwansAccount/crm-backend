@@ -67,7 +67,7 @@ const isAllowedToAttachFileOrNote = async (req) => {
     const user_id = req.user.user_id;
     const user_role = req.user.role;
     const { source_id, source } = body;
-    
+
     if (user_role !== ROLE.representative) { return true; };
 
     const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
@@ -96,7 +96,29 @@ const isAllowedToDeleteFileOrNote = async (req, Model) => {
 
 };
 
+const isAllowedToAccessFilesOrNotes = async (req) => {
+    const user_id = req?.user?.user_id;
+    const user_role = req?.user?.role;
+    const source = req?.query?.source;
+    const source_id = req?.query?.source_id;
+
+    if (user_role !== ROLE.representative) {
+        return true;
+    };
+
+    const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
+
+    const Model = models[source];
+    const query = await Model.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
+
+    if (!query) {
+        throw new Error("you don't have permission to perform this action");
+    };
+
+    return query;
+}
+
 export {
     getAllQueryByRole, getByIdQueryByRole, createQueryByRole, updateQueryByRole, deleteQueryByRole,
-    isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote
+    isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote, isAllowedToAccessFilesOrNotes
 };
