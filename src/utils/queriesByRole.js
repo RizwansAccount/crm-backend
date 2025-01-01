@@ -1,5 +1,5 @@
 import { ROLE, SOURCE } from "../config/roles.js";
-import { ContactModel, FileModel, NoteModel, UserModel } from "../models/index.js";
+import { ContactModel, LeadModel, UserModel } from "../models/index.js";
 
 const getAllQueryByRole = async (req, Model) => {
     const user_id = req.user.user_id;
@@ -67,17 +67,16 @@ const isAllowedToAttachFileOrNote = async (req) => {
     const user_id = req.user.user_id;
     const user_role = req.user.role;
     const { source_id, source } = body;
-    if (user_role === ROLE.representative) {
-        if (source === SOURCE.contact) {
-            const query = await ContactModel.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
-            if (!query) {
-                throw new Error("you don't have permission to perform this action");
-            }
-            return true;
-        }
-    } else {
-        return true;
+    if (user_role !== ROLE.representative) { return true; };
+
+    const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
+    const Model = models[source];
+
+    const query = await Model.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
+    if (!query) {
+        throw new Error("you don't have permission to perform this action");
     }
+    return true;
 };
 
 const isAllowedToDeleteFileOrNote = async (req, Model) => {
