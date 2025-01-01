@@ -67,6 +67,7 @@ const isAllowedToAttachFileOrNote = async (req) => {
     const user_id = req.user.user_id;
     const user_role = req.user.role;
     const { source_id, source } = body;
+    
     if (user_role !== ROLE.representative) { return true; };
 
     const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
