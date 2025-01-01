@@ -77,11 +77,8 @@ export const FileController = {
     delete: async (req, res) => {
         try {
             const id = req.params.id;
-            const isAllowed = await isAllowedToDeleteFileOrNote(req, 'file');
-            if (isAllowed) {
-                const data = await FileService.delete(id);
-                return httpResponse.SUCCESS(res, data);
-            }
+            const data = await FileService.delete(id, req);
+            return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }

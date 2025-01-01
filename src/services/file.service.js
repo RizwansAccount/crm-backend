@@ -1,4 +1,5 @@
 import { FileModel } from "../models/index.js";
+import { isAllowedToDeleteFileOrNote } from "../utils/queriesByRole.js";
 
 export const FileService = {
     getAll: async (req) => {
@@ -28,7 +29,10 @@ export const FileService = {
         return await FileModel.findByIdAndUpdate(id, body);
     },
 
-    delete: async (id) => {
-        return await FileModel.findByIdAndDelete(id);
+    delete: async (id, req) => {
+        const isAllowed = await isAllowedToDeleteFileOrNote(req, FileModel);
+        if (isAllowed) {
+            return await FileModel.findByIdAndDelete(id);
+        }
     },
 };

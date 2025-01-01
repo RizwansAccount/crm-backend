@@ -80,14 +80,12 @@ const isAllowedToAttachFileOrNote = async (req) => {
     }
 };
 
-const isAllowedToDeleteFileOrNote = async (req, module) => {
+const isAllowedToDeleteFileOrNote = async (req, Model) => {
     const user_id = req.user.user_id;
     const user_role = req.user.role;
 
     if (user_role !== ROLE.representative) { return true; };
-    const models = { note: NoteModel, file: FileModel };
 
-    const Model = models[module];
     const query = await Model.findOne({ _id: req.params.id, create_by: user_id });
 
     if (!query) {
