@@ -1,7 +1,7 @@
 
 import { NoteService } from "../services/index.js";
 import { httpResponse } from "../utils/index.js";
-import { isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote } from "../utils/queriesByRole.js";
+import { isAllowedToAttachFileOrNote } from "../utils/queriesByRole.js";
 
 export const NoteController = {
     getAll: async (req, res) => {

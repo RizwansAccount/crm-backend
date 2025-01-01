@@ -1,6 +1,6 @@
 import { FileService } from "../services/index.js";
 import { httpResponse } from "../utils/index.js";
-import { isAllowedToAttachFileOrNote, isAllowedToDeleteFileOrNote } from "../utils/queriesByRole.js";
+import { isAllowedToAttachFileOrNote } from "../utils/queriesByRole.js";
 
 export const FileController = {
     getAll: async (req, res) => {
