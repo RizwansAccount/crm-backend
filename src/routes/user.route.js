@@ -14,7 +14,7 @@ router.get('/:id', authenticate, authorize(PERMISSION.view_user), UserController
 
 router.post('/', authenticate, authorize(PERMISSION.create_user), validate(UserValidation.create.bodySchema), UserController.create);
 
-router.patch('/:id', authenticate, authorize(PERMISSION.update_user), validate(UserValidation.update.bodySchema), UserController.update);
+router.put('/:id', authenticate, authorize(PERMISSION.update_user), validate(UserValidation.update.bodySchema), UserController.update);
 
 router.delete('/:id', authenticate, authorize(PERMISSION.delete_user), UserController.delete)
 

@@ -27,10 +27,10 @@ export const UserValidation = {
 
     update : {
         bodySchema : Joi.object().keys({
-            name : Joi.string(),
-            email : Joi.string().email(),
-            password : Joi.string(),
-            role: Joi.string().valid(ROLE.admin, ROLE.manager, ROLE.representative)
+            name : Joi.string().required(),
+            email : Joi.string().required().email(),
+            password : Joi.string().required(),
+            role: Joi.string().valid(ROLE.admin, ROLE.manager, ROLE.representative).required()
         })
     },
 
