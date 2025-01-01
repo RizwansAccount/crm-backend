@@ -3,16 +3,19 @@ import { isAllowedToDeleteFileOrNote } from "../utils/queriesByRole.js";
 
 export const FileService = {
     getAll: async (req) => {
-        const source = req.query.source;
-        const query = source ? { source } : {};
+        const source = req?.query?.source;
+        const source_id = req?.query?.source_id;
 
-        return await FileModel.find(query)
-        .populate('create_by', '_id name email role')
-        .populate('last_update_by', '_id name email role');
+        return await FileModel.find({ source, source_id })
+            .populate('create_by', '_id name email role')
+            .populate('last_update_by', '_id name email role');
     },
 
-    getById: async (id) => {
-        return await FileModel.findOne({ _id: id })
+    getById: async (id, req) => {
+        const source = req?.query?.source;
+        const source_id = req?.query?.source_id;
+
+        return await FileModel.findOne({ _id: id, source, source_id })
             .populate('create_by', '_id name email role')
             .populate('last_update_by', '_id name email role');
     },

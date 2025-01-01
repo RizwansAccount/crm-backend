@@ -14,7 +14,7 @@ export const FileController = {
     getById: async (req, res) => {
         try {
             const id = req.params.id;
-            const data = await FileService.getById(id);
+            const data = await FileService.getById(id, req);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));

@@ -1,6 +1,13 @@
 import Joi from "joi";
 
-export default {
+export const FileValidation = {
+
+    get : {
+        querySchema : Joi.object().keys({
+            source : Joi.string().required(),
+            source_id : Joi.string().required(),
+        })
+    },
 
     create: {
         bodySchema: Joi.object().keys({
