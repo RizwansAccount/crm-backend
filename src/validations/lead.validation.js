@@ -14,10 +14,10 @@ export const LeadValidation = {
     },
     update: {
         bodySchema: Joi.object().keys({
-            name: Joi.string().required(),
-            contact: Joi.number().required(),
-            lead_source: Joi.string().required(),
-            status: Joi.string().valid(LEAD_STATUS.new, LEAD_STATUS.contacted, LEAD_STATUS.qualified, LEAD_STATUS.lost).required(),
+            name: Joi.string(),
+            contact: Joi.number(),
+            lead_source: Joi.string(),
+            status: Joi.string().valid(LEAD_STATUS.new, LEAD_STATUS.contacted, LEAD_STATUS.qualified, LEAD_STATUS.lost),
             assigned_to: Joi.string(),
         })
     },

@@ -13,7 +13,7 @@ router.get('/:id', authorize(PERMISSION.view_lead), LeadController.getById);
 
 router.post('/', authorize(PERMISSION.create_lead), validate(LeadValidation.create.bodySchema), LeadController.create);
 
-router.put('/:id', authorize(PERMISSION.update_lead), validate(LeadValidation.update.bodySchema), LeadController.update);
+router.patch('/:id', authorize(PERMISSION.update_lead), validate(LeadValidation.update.bodySchema), LeadController.update);
 
 router.delete('/:id', authorize(PERMISSION.delete_lead), LeadController.delete);
 
