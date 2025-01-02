@@ -24,8 +24,13 @@ const getByIdQueryByRole = async (id, req, Model) => {
 };
 
 const createQueryByRole = async (req, body, Model) => {
-    const isAssignedToSaleRepresentative = await UserModel.findOne({ _id: body?.assigned_to, role: ROLE.representative });
+    const isAssignedToSaleRepresentative = await UserModel.findOne({ _id: body?.assigned_to ?? req?.user?.user_id, role: ROLE.representative });
     if (isAssignedToSaleRepresentative) {
+
+        if (!body?.assigned_to) {
+            body.assigned_to = req?.user?.user_id;
+        };
+
         body = { ...body, created_by: req?.user?.user_id, last_updated_by: req?.user?.user_id };
         return await Model.create(body);
     } else {

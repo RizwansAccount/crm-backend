@@ -9,7 +9,7 @@ export const LeadValidation = {
             contact: Joi.number().required(),
             lead_source: Joi.string().required(),
             status: Joi.string().valid(LEAD_STATUS.new, LEAD_STATUS.contacted, LEAD_STATUS.qualified, LEAD_STATUS.lost).required(),
-            assigned_to: Joi.string().required(),
+            assigned_to: Joi.string(),
         })
     },
     update: {
@@ -18,7 +18,7 @@ export const LeadValidation = {
             contact: Joi.number().required(),
             lead_source: Joi.string().required(),
             status: Joi.string().valid(LEAD_STATUS.new, LEAD_STATUS.contacted, LEAD_STATUS.qualified, LEAD_STATUS.lost).required(),
-            assigned_to: Joi.string().required(),
+            assigned_to: Joi.string(),
         })
     },
 
