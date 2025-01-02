@@ -13,7 +13,7 @@ router.get('/:id', authorize(PERMISSION.view_contact), ContactController.getById
 
 router.post('/', authorize(PERMISSION.create_contact), validate(ContactValidation.create.bodySchema), ContactController.create);
 
-router.put('/:id', authorize(PERMISSION.update_contact), validate(ContactValidation.update.bodySchema), ContactController.update);
+router.patch('/:id', authorize(PERMISSION.update_contact), validate(ContactValidation.update.bodySchema), ContactController.update);
 
 router.delete('/:id', authorize(PERMISSION.delete_contact), ContactController.delete);
 
