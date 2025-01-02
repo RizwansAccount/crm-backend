@@ -43,10 +43,13 @@ const updateQueryByRole = async (id, req, Model) => {
     const user_id = req.user.user_id;
     if (user_role === ROLE.representative) {
         const { created_by, assigned_to, ...allowedUpdates } = req.body;
+
+        if (assigned_to) { throw new Error("You are not allowed to assign to anyone"); };
+
         const query = await Model.findOneAndUpdate({ _id: id, $or: [{ created_by: user_id }, { assigned_to: user_id }] }, { ...allowedUpdates, last_updated_by: user_id });
-        if (!query) {
-            throw new Error("you don't have permission to do this action!")
-        };
+
+        if (!query) { throw new Error("you don't have permission to do this action!") };
+
         return query;
     } else {
         return await Model.findByIdAndUpdate(id, { ...req.body, last_updated_by: user_id });
