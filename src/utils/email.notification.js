@@ -91,16 +91,14 @@ const welcomeEmailTemplate = (userName) => `
     </html>
 `;
 
-const getMailOptions = ({ email, subject, template }) => ({
-    from: 'rizsid16@gmail.com',
-    to: email,
-    subject: subject ?? 'Account Verification',
-    html: template
-});
-
 const sendMail = async ({ email, subject, template }) => {
     try {
-        const mailOptions = getMailOptions({ email, subject, template });
+        const mailOptions = {
+            from: 'rizsid16@gmail.com',
+            to: email,
+            subject: subject ?? 'Account Verification',
+            html: template
+        };
         await transporterEmail.sendMail(mailOptions);
     } catch (error) {
         console.log(error)
@@ -108,6 +106,5 @@ const sendMail = async ({ email, subject, template }) => {
 };
 
 export {
-    transporterEmail, getMailOptions, sendMail,
-    welcomeEmailTemplate
+    sendMail, welcomeEmailTemplate
 };
