@@ -11,72 +11,102 @@ const transporterEmail = () => {
     return transporter;
 };
 
-const emailTemplate = (userName, message) => `
-    <!DOCTYPE html>
+const welcomeEmailTemplate = (userName) => `
+   <!DOCTYPE html>
     <html>
     <head>
     <style>
         body {
         font-family: Arial, sans-serif;
-        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
         color: #333;
+        }
+        .email-wrapper {
+        width: 100%;
+        padding: 20px;
         }
         .email-container {
         max-width: 600px;
         margin: 0 auto;
-        border: 1px solid #ddd;
-        border-radius: 10px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+        background-color: #4A6DA7;
         padding: 20px;
-        background-color: #f9f9f9;
-        }
-        .header {
         text-align: center;
-        background-color: #4CAF50;
         color: white;
-        padding: 10px 0;
-        border-radius: 10px 10px 0 0;
         }
-        .content {
-        margin: 20px 0;
+        .email-header h1 {
+        margin: 0;
+        font-size: 24px;
         }
-        .footer {
+        .email-body {
+        padding: 20px;
+        }
+        .email-body h2 {
+        color: #4A6DA7;
+        font-size: 20px;
+        margin-top: 0;
+        }
+        .email-body p {
+        font-size: 16px;
+        line-height: 1.6;
+        }
+        .email-footer {
+        background-color: #f4f4f4;
         text-align: center;
+        padding: 10px;
         font-size: 12px;
         color: #777;
+        }
+        .email-footer a {
+        color: #4A6DA7;
+        text-decoration: none;
         }
     </style>
     </head>
     <body>
-    <div class="email-container">
-        <div class="header">
-        <h1>Welcome to Our Service</h1>
+    <div class="email-wrapper">
+        <div class="email-container">
+        <div class="email-header">
+            <h1>Welcome to Mercury Sols</h1>
         </div>
-        <div class="content">
-        <p>Hi ${userName},</p>
-        <p>${message}</p>
+        <div class="email-body">
+            <h2>Hello ${userName},</h2>
+            <p>We are thrilled to have you join the Mercury Sols family! Our team is committed to providing you with exceptional service and support every step of the way.</p>
+            <p>Feel free to reach out if you have any questions or need assistance. We look forward to a fantastic journey together!</p>
+            <p>Best Regards,<br> The Mercury Sols Team</p>
         </div>
-        <div class="footer">
-        <p>&copy; 2025 Your Company. All rights reserved.</p>
+        <div class="email-footer">
+            <p>&copy; <a href="https://www.mercurysols.org" target="_blank">Visit Our Website</a></p>
+        </div>
         </div>
     </div>
     </body>
     </html>
 `;
 
-const getMailOptions = ({ email, subject, userName, message }) => ({
+const getMailOptions = ({ email, subject, template }) => ({
     from: 'rizsid16@gmail.com',
     to: email,
     subject: subject ?? 'Account Verification',
-    html: emailTemplate(userName, message)
+    html: template
 });
 
-const sendMail = async ({ email, subject, userName, message }) => {
+const sendMail = async ({ email, subject, template }) => {
     try {
-        const mailOptions = getMailOptions({ email, subject, userName, message });
+        const mailOptions = getMailOptions({ email, subject, template });
         await transporterEmail.sendMail(mailOptions);
     } catch (error) {
         console.log(error)
     }
 };
 
-export { transporterEmail, getMailOptions, sendMail };
+export { transporterEmail, getMailOptions, sendMail,
+    welcomeEmailTemplate
+ };
