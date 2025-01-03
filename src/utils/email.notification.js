@@ -107,6 +107,7 @@ const sendMail = async ({ email, subject, template }) => {
     }
 };
 
-export { transporterEmail, getMailOptions, sendMail,
+export {
+    transporterEmail, getMailOptions, sendMail,
     welcomeEmailTemplate
- };
+};
