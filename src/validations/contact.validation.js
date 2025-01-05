@@ -10,7 +10,7 @@ export const ContactValidation = {
             address: Joi.string().required(),
             company: Joi.string().required(),
             tags: Joi.array().items(Joi.string().required()),
-            assigned_to: Joi.string()
+            assigned_to: Joi.array().items(Joi.string())
         })
     },
 
@@ -22,7 +22,7 @@ export const ContactValidation = {
             address: Joi.string(),
             company: Joi.string(),
             tags: Joi.array().items(Joi.string()),
-            assigned_to: Joi.string()
+            assigned_to: Joi.array().items(Joi.string())
         })
     },
 

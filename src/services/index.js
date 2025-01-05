@@ -3,3 +3,4 @@ export * from './contact.service.js';
 export * from './lead.service.js';
 export * from './file.service.js';
 export * from './note.service.js';
+export * from './assignment.service.js';

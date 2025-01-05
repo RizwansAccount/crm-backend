@@ -8,7 +8,6 @@ const schemaStructure = {
     company: { type: String, required: true },
     tags: [{ type: String }],
     created_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    assigned_to: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     last_updated_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 };
 
