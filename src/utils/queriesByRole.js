@@ -39,7 +39,41 @@ const getAllQueryByRole = async (req, Model) => {
                     }
                 ],
             }
-        }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'created_by',
+                foreignField: '_id',
+                as: 'created_by'
+            }
+        },
+        {
+            $unwind: '$created_by'
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'last_updated_by',
+                foreignField: '_id',
+                as: 'last_updated_by'
+            }
+        },
+        {
+            $unwind: '$last_updated_by'
+        },
+        {
+            $project: {
+                'created_by.password': 0,
+                'created_by.createdAt': 0,
+                'created_by.updatedAt': 0,
+                'created_by.__v': 0,
+                'last_updated_by.password': 0,
+                'last_updated_by.createdAt': 0,
+                'last_updated_by.updatedAt': 0,
+                'last_updated_by.__v': 0,
+            }
+        },
     ];
 
     if (user_role === ROLE.representative) {
@@ -89,7 +123,41 @@ const getByIdQueryByRole = async (id, req, Model) => {
                     }
                 ],
             }
-        }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'created_by',
+                foreignField: '_id',
+                as: 'created_by'
+            }
+        },
+        {
+            $unwind: '$created_by'
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'last_updated_by',
+                foreignField: '_id',
+                as: 'last_updated_by'
+            }
+        },
+        {
+            $unwind: '$last_updated_by'
+        },
+        {
+            $project: {
+                'created_by.password': 0,
+                'created_by.createdAt': 0,
+                'created_by.updatedAt': 0,
+                'created_by.__v': 0,
+                'last_updated_by.password': 0,
+                'last_updated_by.createdAt': 0,
+                'last_updated_by.updatedAt': 0,
+                'last_updated_by.__v': 0,
+            }
+        },
     ];
 
     if (user_role === ROLE.representative) {
@@ -188,8 +256,10 @@ const isAllowedToAttachFileOrNote = async (req) => {
         throw new Error("it does not exist!")
     };
 
-    const query = await Model.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
-    if (!query) {
+    const isCreatedUser = await Model.findOne({ _id : source_id, created_by : user_id });
+    const isAssignedUser = await AssignmentModel.findOne({ source_id, assigned_to : user_id });
+    const isAllow = isCreatedUser || isAssignedUser;
+    if (!isAllow) {
         throw new Error("you don't have permission to perform this action");
     }
     return true;
@@ -230,13 +300,15 @@ const isAllowedToAccessFilesOrNotes = async (req) => {
     const isExist = await Model.findById(source_id);
     if (!isExist) { throw new Error("it does not exist!") };
 
-    const query = await Model.findOne({ _id: source_id, $or: [{ created_by: user_id }, { assigned_to: user_id }] });
+    const isCreatedUser = await Model.findOne({ _id: source_id, created_by: user_id  });
+    const isAssignedUser = await AssignmentModel.findOne({ source_id, assigned_to : user_id });
+    const isAllow = isCreatedUser || isAssignedUser;
 
-    if (!query) {
+    if (!isAllow) {
         throw new Error("you don't have permission to perform this action");
     };
 
-    return query;
+    return true;
 };
 
 export {

@@ -32,9 +32,9 @@ export const ROLE = {
 };
 
 export const SOURCE = {
-    contact: 'contact',
-    lead: 'lead',
-    activity: 'activity'
+    contact: 'Contact',
+    lead: 'Lead',
+    activity: 'Activity'
 };
 
 export const LEAD_STATUS = {
