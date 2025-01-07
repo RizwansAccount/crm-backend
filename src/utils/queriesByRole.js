@@ -2,13 +2,7 @@ import mongoose from "mongoose";
 import { ROLE, SOURCE } from "../config/roles.js";
 import { AssignmentModel, ContactModel, LeadModel, UserModel } from "../models/index.js";
 
-const getAllQueryByRole = async (req, Model) => {
-
-    const user_id = req.user.user_id;
-    const user_role = req.user.role;
-
-    const assignments = await AssignmentModel.find({ assigned_to: user_id });
-    const contactIds = assignments?.map((assignment) => new mongoose.Types.ObjectId(assignment?.source_id));
+const getPipelineByRole =()=>{
 
     let pipeline = [
         {
@@ -75,6 +69,19 @@ const getAllQueryByRole = async (req, Model) => {
             }
         },
     ];
+
+    return pipeline;
+};
+
+const getAllQueryByRole = async (req, Model) => {
+
+    const user_id = req.user.user_id;
+    const user_role = req.user.role;
+
+    const assignments = await AssignmentModel.find({ assigned_to: user_id });
+    const contactIds = assignments?.map((assignment) => new mongoose.Types.ObjectId(assignment?.source_id));
+
+    let pipeline = getPipelineByRole();
 
     if (user_role === ROLE.representative) {
         pipeline?.unshift({
@@ -93,77 +100,14 @@ const getByIdQueryByRole = async (id, req, Model) => {
     const assignments = await AssignmentModel.find({ assigned_to: user_id });
     const contactIds = assignments?.map((assignment) => new mongoose.Types.ObjectId(assignment?.source_id));
 
-    let pipeline = [
-        { $match: { _id: new mongoose.Types.ObjectId(id) } },
-        {
-            $lookup: {
-                from: 'assignments',
-                localField: '_id',
-                foreignField: 'source_id',
-                as: 'assigned_to',
-                pipeline: [
-                    {
-                        $lookup: {
-                            from: 'users',
-                            localField: 'assigned_to',
-                            foreignField: '_id',
-                            as: 'user'
-                        }
-                    },
-                    {
-                        $unwind: '$user'
-                    },
-                    {
-                        $project: {
-                            _id: '$user._id',
-                            name: '$user.name',
-                            email: '$user.email',
-                            role: '$user.role'
-                        }
-                    }
-                ],
-            }
-        },
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'created_by',
-                foreignField: '_id',
-                as: 'created_by'
-            }
-        },
-        {
-            $unwind: '$created_by'
-        },
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'last_updated_by',
-                foreignField: '_id',
-                as: 'last_updated_by'
-            }
-        },
-        {
-            $unwind: '$last_updated_by'
-        },
-        {
-            $project: {
-                'created_by.password': 0,
-                'created_by.createdAt': 0,
-                'created_by.updatedAt': 0,
-                'created_by.__v': 0,
-                'last_updated_by.password': 0,
-                'last_updated_by.createdAt': 0,
-                'last_updated_by.updatedAt': 0,
-                'last_updated_by.__v': 0,
-            }
-        },
-    ];
+    let pipeline = getPipelineByRole();
 
     if (user_role === ROLE.representative) {
         pipeline.unshift({
             $match: { _id: new mongoose.Types.ObjectId(id), $or: [{ created_by: new mongoose.Types.ObjectId(user_id) }, { _id: { $in: contactIds } }] }
         })
+    } else {
+        pipeline.unshift({ _id: new mongoose.Types.ObjectId(id)});
     }
 
     const data = await Model.aggregate(pipeline);
