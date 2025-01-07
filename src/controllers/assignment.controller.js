@@ -10,28 +10,10 @@ export const AssignmentController = {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
     },
-    getById: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const data = await AssignmentService.getById(id, req);
-            return httpResponse.SUCCESS(res, data);
-        } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
-        }
-    },
-    create: async (req, res) => {
+    createAndUpdate: async (req, res) => {
         try {
             const body = req.body;
-            const data = await AssignmentService.create(req, body);
-            return httpResponse.SUCCESS(res, data);
-        } catch (error) {
-            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
-        }
-    },
-    update: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const data = await AssignmentService.update(id, req);
+            const data = await AssignmentService.createAndUpdate(req, body);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
@@ -39,8 +21,7 @@ export const AssignmentController = {
     },
     delete: async (req, res) => {
         try {
-            const id = req.params.id;
-            const data = await AssignmentService.delete(id, req);
+            const data = await AssignmentService.delete(req);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));

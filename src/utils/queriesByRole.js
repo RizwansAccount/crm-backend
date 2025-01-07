@@ -135,7 +135,7 @@ const createQueryByRole = async (req, body, Model) => {
 const updateQueryByRole = async (id, req, Model) => {
     const user_role = req.user.role;
     const user_id = req.user.user_id;
-    const assgined_to = req?.body?.assigned_to;
+    const assigned_to = req?.body?.assigned_to;
 
     if (user_role === ROLE.representative) {
         const isCreatedUser = await Model.findOne({ _id: id, created_by: user_id });
@@ -147,21 +147,21 @@ const updateQueryByRole = async (id, req, Model) => {
         };
     }
 
-    if (assgined_to?.length > 0) {
+    if (assigned_to?.length > 0) {
 
         if (user_role === ROLE.representative) {
             throw new Error("You are not allowed to assign to anyone");
         };
 
-        const query = await UserModel.find({ _id: { $in: assgined_to }, role: ROLE.representative });
+        const query = await UserModel.find({ _id: { $in: assigned_to }, role: ROLE.representative });
 
-        if ((assgined_to?.length !== query?.length)) {
+        if ((assigned_to?.length !== query?.length)) {
             throw new Error("you only assigned to any sale-representative");
         };
 
         await AssignmentModel.deleteMany({ source: req?.source, source_id: id });
 
-        const assignments = assgined_to?.map(assignedToId => ({ source: req?.source, source_id: id, assigned_to: assignedToId }));
+        const assignments = assigned_to?.map(assignedToId => ({ source: req?.source, source_id: id, assigned_to: assignedToId }));
         await AssignmentModel.insertMany(assignments);
 
     };

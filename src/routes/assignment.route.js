@@ -1,16 +1,14 @@
 import express from "express";
 import { AssignmentController } from "../controllers/index.js";
+import { validate } from "../middleware/validate.js";
+import { AssignmentValidation } from "../validations/assignment.validation.js";
 
 const router = express.Router();
 
-router.get('/', AssignmentController.getAll);
+router.get('/', validate(AssignmentValidation.get.querySchema, 'query'), AssignmentController.getAll);
 
-router.get('/:id', AssignmentController.getById);
+router.post('/', validate(AssignmentValidation.create.bodySchema), AssignmentController.createAndUpdate);
 
-router.post('/', AssignmentController.create);
-
-router.put('/:id', AssignmentController.update);
-
-router.delete('/:id', AssignmentController.delete);
+router.delete('/un-assign', validate(AssignmentValidation.delete.querySchema, 'query'), AssignmentController.delete);
 
 export default router;
