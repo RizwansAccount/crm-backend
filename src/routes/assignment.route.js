@@ -9,6 +9,6 @@ router.get('/', validate(AssignmentValidation.get.querySchema, 'query'), Assignm
 
 router.post('/', validate(AssignmentValidation.create.bodySchema), AssignmentController.createAndUpdate);
 
-router.delete('/un-assign', validate(AssignmentValidation.delete.querySchema, 'query'), AssignmentController.delete);
+router.delete('/remove-assign', validate(AssignmentValidation.delete.bodySchema), AssignmentController.delete);
 
 export default router;

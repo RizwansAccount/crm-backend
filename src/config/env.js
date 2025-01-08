@@ -3,4 +3,6 @@ export const env = {
 	nodeEnv: process.env.NODE_ENV || "development",
 	mongodbUri: process.env.DB_URI || "mongodb://127.0.0.1:27017/crm",
 	jwtSecret: process.env.JWT_SECRET || "my_crm_secret",
+	transportMail: process.env.TRANSPORT_MAIL,
+	transportPassword: process.env.TRANSPORT_PASSWORD,
 };

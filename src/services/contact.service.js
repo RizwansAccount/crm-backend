@@ -1,3 +1,4 @@
+import { SOURCE } from "../config/roles.js";
 import { ContactModel } from "../models/index.js";
 import { createQueryByRole, deleteQueryByRole, getAllQueryByRole, getByIdQueryByRole, updateQueryByRole } from "../utils/queriesByRole.js";
 
@@ -13,13 +14,13 @@ export const ContactService = {
     },
 
     create: async (req, body) => {
-        req.source = "Contact";
+        req.source = SOURCE.contact;
         const data = await createQueryByRole(req, body, ContactModel);
         return data;
     },
 
     update: async (id, req) => {
-        req.source = "Contact";
+        req.source = SOURCE.contact;
         const data = await updateQueryByRole(id, req, ContactModel);
         return data;
     },

@@ -1,3 +1,4 @@
+import { SOURCE } from "../config/roles.js";
 import { LeadModel } from "../models/index.js";
 import { createQueryByRole, deleteQueryByRole, getAllQueryByRole, getByIdQueryByRole, updateQueryByRole } from "../utils/queriesByRole.js";
 
@@ -13,11 +14,13 @@ export const LeadService = {
     },
 
     create: async (req, body) => {
+        req.source = SOURCE.lead;
         const data = await createQueryByRole(req, body, LeadModel);
         return data;
     },
 
     update: async (id, req) => {
+        req.source = SOURCE.lead;
         const data = await updateQueryByRole(id, req, LeadModel);
         return data;
     },

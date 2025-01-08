@@ -11,10 +11,10 @@ export const AssignmentValidation = {
     },
 
     delete : {
-        querySchema: Joi.object().keys({
+        bodySchema: Joi.object().keys({
             source: Joi.string().valid(SOURCE.contact, SOURCE.lead, SOURCE.activity).required(),
             source_id: Joi.string().required(),
-            un_assigned_to: Joi.string().required(),
+            user_id: Joi.string().required(),
         })
     },
 

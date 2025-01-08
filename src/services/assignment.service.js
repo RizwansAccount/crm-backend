@@ -24,7 +24,10 @@ export const AssignmentService = {
 
   createAndUpdate: async (req, body) => {
 
-    if (req.user.role === ROLE.representative) {
+    const user_role = req?.user?.role;
+    const user_id = req?.user?.user_id;
+
+    if (user_role === ROLE.representative) {
       throw new Error("you don't have permission to do this action!");
     };
 
@@ -44,6 +47,8 @@ export const AssignmentService = {
       }
     }
 
+    await Model.findByIdAndUpdate(source_id, { last_updated_by : user_id });
+
     await AssignmentModel.deleteMany({ source, source_id });
 
     const query = assigned_to?.map((user_id) => ({source, source_id, assigned_to: user_id, }));
@@ -53,7 +58,7 @@ export const AssignmentService = {
 
   delete: async (req) => {
     const user_role = req.user.role;
-    const { source, source_id, un_assigned_to } = req?.query;
+    const { source, source_id, user_id } = req?.body;
 
     if (user_role === ROLE.representative) {
       throw new Error("you don't have permission to do this action!");
@@ -62,7 +67,7 @@ export const AssignmentService = {
     const query = await AssignmentModel.findOne({
       source,
       source_id,
-      assigned_to: un_assigned_to,
+      assigned_to: user_id,
     });
 
     if (!query) {
@@ -72,7 +77,7 @@ export const AssignmentService = {
     return await AssignmentModel.deleteOne({
       source,
       source_id,
-      assigned_to: un_assigned_to,
+      assigned_to: user_id,
     });
   },
 };

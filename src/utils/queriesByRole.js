@@ -115,14 +115,16 @@ const getByIdQueryByRole = async (id, req, Model) => {
 };
 
 const createQueryByRole = async (req, body, Model) => {
+    const user_id = req?.user?.user_id;
     const assgined_to = body?.assigned_to;
+
     if (assgined_to?.length > 0) {
         const query = await UserModel.find({ _id: { $in: assgined_to }, role: ROLE.representative });
         if ((assgined_to?.length !== query?.length)) {
             throw new Error("you only assigned to any sale-representative");
         };
     }
-    const response = await Model.create({ ...body, created_by: req?.user?.user_id, last_updated_by: req?.user?.user_id });
+    const response = await Model.create({ ...body, created_by: user_id, last_updated_by: user_id });
 
     if (assgined_to?.length > 0) {
         const assignments = assgined_to?.map(assignedToId => ({ source: req?.source, source_id: response?._id, assigned_to: assignedToId }));
