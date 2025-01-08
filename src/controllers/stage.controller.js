@@ -1,11 +1,11 @@
 
-import { PipelineService } from "../services/index.js";
+import { StageService } from "../services/index.js";
 import { httpResponse } from "../utils/index.js";
 
-export const PipelineController = {
+export const StageController = {
     getAll: async (req, res) => {
         try {
-            const data = await PipelineService.getAll();
+            const data = await StageService.getAll(req);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
@@ -14,7 +14,7 @@ export const PipelineController = {
     getById: async (req, res) => {
         try {
             const id = req.params.id;
-            const data = await PipelineService.getById(id);
+            const data = await StageService.getById(id);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
@@ -23,7 +23,7 @@ export const PipelineController = {
     create: async (req, res) => {
         try {
             const body = req.body;
-            const data = await PipelineService.create(req, body);
+            const data = await StageService.create(req, body);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
@@ -32,7 +32,7 @@ export const PipelineController = {
     update: async (req, res) => {
         try {
             const id = req.params.id;
-            const data = await PipelineService.update(id, req);
+            const data = await StageService.update(id, req);
             return httpResponse.SUCCESS(res, data);
         } catch (error) {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
@@ -41,7 +41,7 @@ export const PipelineController = {
     delete: async (req, res) => {
         try {
             const id = req.params.id;
-            const data = await PipelineService.delete(id, req);
+            const data = await StageService.delete(id, req);
             return httpResponse.SUCCESS(res, data);
 
         } catch (error) {

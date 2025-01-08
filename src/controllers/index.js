@@ -5,3 +5,4 @@ export * from './file.controller.js';
 export * from './note.controller.js';
 export * from './assignment.controller.js';
 export * from './pipeline.controller.js';
+export * from './stage.controller.js';

@@ -58,14 +58,8 @@ const getPipelineByRole =()=>{
         },
         {
             $project: {
-                'created_by.password': 0,
-                'created_by.createdAt': 0,
-                'created_by.updatedAt': 0,
-                'created_by.__v': 0,
-                'last_updated_by.password': 0,
-                'last_updated_by.createdAt': 0,
-                'last_updated_by.updatedAt': 0,
-                'last_updated_by.__v': 0,
+                created_by: { password : 0, createdAt: 0, updatedAt: 0, __v: 0 },
+                last_updated_by: { password : 0, createdAt: 0, updatedAt: 0, __v: 0 },
             }
         },
     ];
