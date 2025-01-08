@@ -5,6 +5,7 @@ import leadRoute from './lead.route.js';
 import fileRoute from './file.route.js';
 import noteRoute from './note.route.js';
 import assignmentRoute from './assignment.route.js';
+import pipelineRoute from './pipeline.route.js';
 
 // routes
 const protectedRouter = express.Router();
@@ -16,6 +17,7 @@ protectedRouter.use("/lead", leadRoute);
 protectedRouter.use("/file", fileRoute);
 protectedRouter.use("/note", noteRoute);
 protectedRouter.use("/assignment", assignmentRoute);
+protectedRouter.use("/pipeline", pipelineRoute);
 
 // Un-Protected Routes
 unProtectedRouter.use("/user", userRoute);
