@@ -1,12 +1,11 @@
 import nodemailer from 'nodemailer';
-import config from '../config/index.js';
 
 const transporterEmail = () => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: config.env.transportMail,
-            pass: config.env.transportPassword
+            user: process.env.TRANSPORT_MAIL,
+            pass: process.env.TRANSPORT_PASSWORD
         }
     });
     return transporter;
@@ -95,7 +94,7 @@ const welcomeEmailTemplate = (userName) => `
 const sendMail = async ({ email, subject, template }) => {
     try {
         const mailOptions = {
-            from: config.env.transportMail,
+            from: process.env.TRANSPORT_MAIL,
             to: email,
             subject: subject ?? 'Account Verification',
             html: template
