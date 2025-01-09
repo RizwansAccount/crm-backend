@@ -6,3 +6,4 @@ export * from './lead.validation.js';
 export * from './assignment.validation.js';
 export * from './pipeline.validation.js';
 export * from './stage.validation.js';
+export * from './opportunity.validation.js';

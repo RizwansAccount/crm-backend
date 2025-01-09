@@ -6,3 +6,4 @@ export * from './note.service.js';
 export * from './assignment.service.js';
 export * from './pipeline.service.js';
 export * from './stage.service.js';
+export * from './opportunity.service.js';

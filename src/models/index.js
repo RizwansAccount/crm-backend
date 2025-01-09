@@ -6,3 +6,4 @@ export * from './note.model.js';
 export * from './assignment.model.js';
 export * from './pipeline.model.js';
 export * from './stage.model.js';
+export * from './opportunity.model.js';

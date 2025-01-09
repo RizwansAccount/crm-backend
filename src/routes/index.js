@@ -7,6 +7,7 @@ import noteRoute from './note.route.js';
 import assignmentRoute from './assignment.route.js';
 import pipelineRoute from './pipeline.route.js';
 import stageRoute from './stage.route.js';
+import opportunityRoute from './opportunity.route.js';
 
 // routes
 const protectedRouter = express.Router();
@@ -20,6 +21,7 @@ protectedRouter.use("/note", noteRoute);
 protectedRouter.use("/assignment", assignmentRoute);
 protectedRouter.use("/pipeline", pipelineRoute);
 protectedRouter.use("/stage", stageRoute);
+protectedRouter.use("/opportunity", opportunityRoute);
 
 // Un-Protected Routes
 unProtectedRouter.use("/user", userRoute);
