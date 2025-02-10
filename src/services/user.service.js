@@ -12,6 +12,12 @@ export const UserService = {
         return await UserModel.findOne({ _id: id });
     },
 
+    getCurrentUser : async(user) => {
+        return {
+            email: user?.email, role: user?.role, user_id: user?.user_id
+        };
+    },
+
     create: async (body) => {
         let { email, password } = body;
 

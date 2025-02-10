@@ -19,6 +19,14 @@ export const UserController = {
             return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
         }
     },
+    getCurrentUser: async (req, res) => {
+        try {
+            const data = await UserService.getCurrentUser(req?.user);
+            return httpResponse.SUCCESS(res, data);
+        } catch (error) {
+            return httpResponse.INTERNAL_SERVER_ERROR(res, {}, (error.message || error));
+        }
+    },
     create: async (req, res) => {
         try {
             const body = req.body;

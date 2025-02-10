@@ -8,7 +8,9 @@ import { PERMISSION } from '../config/roles.js';
 
 const router = epxress.Router();
 
-router.get('/', authenticate, authorize(PERMISSION.view_all_user), UserController.getAll);
+router.get('/', authenticate, UserController.getAll);
+
+router.get('/me', authenticate, UserController.getCurrentUser);
 
 router.get('/:id', authenticate, authorize(PERMISSION.view_user), UserController.getById);
 
