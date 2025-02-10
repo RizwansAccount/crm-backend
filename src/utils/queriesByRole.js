@@ -101,7 +101,9 @@ const getByIdQueryByRole = async (id, req, Model) => {
             $match: { _id: new mongoose.Types.ObjectId(id), $or: [{ created_by: new mongoose.Types.ObjectId(user_id) }, { _id: { $in: sourceIds } }] }
         })
     } else {
-        pipeline.unshift({ _id: new mongoose.Types.ObjectId(id) });
+        pipeline.unshift({
+            $match: { _id: new mongoose.Types.ObjectId(id) }
+        });
     }
 
     const data = await Model.aggregate(pipeline);
@@ -112,12 +114,15 @@ const createQueryByRole = async (req, body, Model) => {
     const user_id = req?.user?.user_id;
     const assgined_to = body?.assigned_to;
 
+
     if (assgined_to?.length > 0) {
         const query = await UserModel.find({ _id: { $in: assgined_to }, role: ROLE.representative });
         if ((assgined_to?.length !== query?.length)) {
             throw new Error("you only assigned to any sale-representative");
         };
-    }
+    };
+
+    console.log(body);
     const response = await Model.create({ ...body, created_by: user_id, last_updated_by: user_id });
 
     if (assgined_to?.length > 0) {
