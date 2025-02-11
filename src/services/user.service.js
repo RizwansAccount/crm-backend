@@ -14,7 +14,7 @@ export const UserService = {
 
     getCurrentUser : async(user) => {
         return {
-            email: user?.email, role: user?.role, user_id: user?.user_id
+            email: user?.email, role: user?.role, user_id: user?.user_id, name : user?.name
         };
     },
 
@@ -39,11 +39,11 @@ export const UserService = {
 
         if (!isPasswordValid) { throw new Error('invalid password!'); }
 
-        const userDetails = { email: user.email, role: user.role, user_id: user._id };
+        const userDetails = { name : user.name, email: user.email, role: user.role, user_id: user._id, name : user.name };
 
         const token = jwt.sign(userDetails, config.env.jwtSecret);
 
-        return { token, user_id: user?._id, email: user?.email, role: user?.role };
+        return { token, user_id: user?._id, email: user?.email, role: user?.role, name : user?.name };
     },
 
     update: async (id, body) => {
