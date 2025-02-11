@@ -148,7 +148,7 @@ const updateQueryByRole = async (id, req, Model) => {
         };
     }
 
-    if (assigned_to?.length > 0) {
+    if (assigned_to) {
 
         if (user_role === ROLE.representative) {
             throw new Error("You are not allowed to assign to anyone");
@@ -162,8 +162,10 @@ const updateQueryByRole = async (id, req, Model) => {
 
         await AssignmentModel.deleteMany({ source: req?.source, source_id: id });
 
-        const assignments = assigned_to?.map(assignedToId => ({ source: req?.source, source_id: id, assigned_to: assignedToId }));
-        await AssignmentModel.insertMany(assignments);
+        if (assigned_to?.length > 0) {
+            const assignments = assigned_to?.map(assignedToId => ({ source: req?.source, source_id: id, assigned_to: assignedToId }));
+            await AssignmentModel.insertMany(assignments);
+        };
 
     };
 
@@ -310,7 +312,7 @@ const isAllowedToCreateOpportunity = async (req) => {
 
     const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
     const Model = models[source];
-    
+
     const isSourceExist = await Model.findOne({ _id: source_id });
     if (!isSourceExist) { throw new Error("Source not found!"); };
 
