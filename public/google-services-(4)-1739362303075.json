@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "672525042731",
+    "project_id": "safarigpsapp",
+    "storage_bucket": "safarigpsapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672525042731:android:77a7a42b75e6c7ba33166e",
+        "android_client_info": {
+          "package_name": "com.safarigps.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb8BX-3CaLLrX4F5UT3Ig4xdNVfHMI2G4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
