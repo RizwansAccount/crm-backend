@@ -122,7 +122,6 @@ const createQueryByRole = async (req, body, Model) => {
         };
     };
 
-    console.log(body);
     const response = await Model.create({ ...body, created_by: user_id, last_updated_by: user_id });
 
     if (assgined_to?.length > 0) {
