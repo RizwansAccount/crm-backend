@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ROLE } from "../config/roles.js";
-import { PipelineModel } from "../models/index.js";
+import { PipelineModel, StageModel } from "../models/index.js";
 
 const getPipelineByRole = () => {
     let pipeline = [
@@ -98,7 +98,18 @@ export const PipelineService = {
         if (req?.user?.role === ROLE.representative) {
             throw new Error("You don't have permission to do this action");
         };
-        return await PipelineModel.create({ ...body, created_by: user_id, last_updated_by: user_id });
+
+
+        const pipeline = await PipelineModel.create({ ...body, created_by: user_id, last_updated_by: user_id });
+
+        if (req?.body?.stages?.length > 0) {
+            const allStagesData = req?.body?.stages?.map((stage) => ({
+                name: stage, pipeline_id: pipeline?._id, created_by: user_id, last_updated_by: user_id
+            }));
+            await StageModel.insertMany(allStagesData);
+        };
+
+        return pipeline;
     },
 
     update: async (id, req) => {
@@ -112,6 +123,7 @@ export const PipelineService = {
         if (req?.user?.role === ROLE.representative) {
             throw new Error("You don't have permission to do this action");
         };
-        return await PipelineModel.findByIdAndDelete(id);
+        await PipelineModel.findByIdAndDelete(id);
+        return await StageModel.deleteMany({pipeline_id : id});
     }
 }

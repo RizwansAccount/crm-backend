@@ -5,6 +5,7 @@ export const PipelineValidation = {
     create: {
         bodySchema: Joi.object().keys({
             name: Joi.string().required(),
+            stages : Joi.array().items(Joi.string())
         })
     },
 
