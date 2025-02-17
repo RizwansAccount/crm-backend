@@ -267,13 +267,6 @@ const isAllowedToAccessOpporunity = async (req) => {
     const models = { [SOURCE.contact]: ContactModel, [SOURCE.lead]: LeadModel };
     const Model = models[source];
 
-    if(source && source_id) {
-        const isModuleExist = await Model.findOne({_id : source_id});
-        if(!isModuleExist) {
-            return httpResponse.NOT_FOUND(res, null);
-        }
-    };
-
     const assignments = await AssignmentModel.find({ assigned_to: user_id, source_id });
     const sourceIds = assignments?.map((assignment) => new mongoose.Types.ObjectId(assignment?.source_id));
 

@@ -1,14 +1,18 @@
 import { ROLE } from "../config/roles.js";
-import { OpportunityModel} from "../models/index.js";
+import { OpportunityModel } from "../models/index.js";
 import { isAllowedToAccessOpporunity, isAllowedToCreateOpportunity, isAllowedToUpdateOpportunity } from "../utils/queriesByRole.js";
 
 export const OpportunityService = {
     getAll: async (req) => {
 
         const isAllow = await isAllowedToAccessOpporunity(req);
-        if (!isAllow) { throw new Error("You don't have permission to do this action!"); };
+        // if (!isAllow) { throw new Error("You don't have permission to do this action!"); };
+        if(!isAllow) { return [] };
 
-        return await OpportunityModel.find()
+        const source = req?.query?.source;
+        const source_id = req?.query?.source_id;
+
+        return await OpportunityModel.find({ source, source_id })
             .populate('created_by', '_id name email role')
             .populate('last_updated_by', '_id name email role');
     },
@@ -16,9 +20,13 @@ export const OpportunityService = {
     getById: async (id, req) => {
 
         const isAllow = await isAllowedToAccessOpporunity(req);
-        if (!isAllow) { throw new Error("You don't have permission to do this action!"); };
+        // if (!isAllow) { throw new Error("You don't have permission to do this action!"); };
+        if (!isAllow) { return {} };
 
-        return await OpportunityModel.findOne({ _id: id })
+        const source = req?.query?.source;
+        const source_id = req?.query?.source_id;
+
+        return await OpportunityModel.findOne({ _id: id, source, source_id })
             .populate('created_by', '_id name email role')
             .populate('last_updated_by', '_id name email role');
     },
